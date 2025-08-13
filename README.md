@@ -48,5 +48,5 @@ Built with **Python + Machine Learning**, it provides real-time analytics, featu
 
 
 
-## 📂 Project Structure
+
 
