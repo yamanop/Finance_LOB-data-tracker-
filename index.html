@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>BTC Movement Predictor</title>
+  <style>
+    body { font-family: Arial; margin: 30px; }
+    input { padding: 8px; margin: 5px; width: 200px; }
+    button { padding: 10px 20px; background-color: green; color: white; }
+    #result { font-size: 20px; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h2>📈 BTC Price Movement Predictor</h2>
+  <input id="bid_price" placeholder="Bid Price" />
+  <input id="ask_price" placeholder="Ask Price" />
+  <input id="bid_volume" placeholder="Bid Volume" />
+  <input id="ask_volume" placeholder="Ask Volume" />
+  <br>
+  <button onclick="predict()">Predict</button>
+  <div id="result"></div>
+
+  <script>
+    async function predict() {
+      const data = {
+        bid_price: document.getElementById("bid_price").value,
+        ask_price: document.getElementById("ask_price").value,
+        bid_volume: document.getElementById("bid_volume").value,
+        ask_volume: document.getElementById("ask_volume").value
+      };
+
+      const res = await fetch("http://localhost:5000/predict", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      const result = await res.json();
+      const prediction = result.prediction;
+
+      const text = prediction == -1 ? "📉 DOWN" :
+                   prediction == 0 ? "🔁 STABLE" :
+                                     "📈 UP";
+
+      document.getElementById("result").innerText = "Prediction: " + text;
+    }
+  </script>
+</body>
+</html>
